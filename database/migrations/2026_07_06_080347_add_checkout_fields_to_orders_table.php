@@ -18,10 +18,9 @@ return new class extends Migration
 
             $table->string('estimated_delivery')->nullable();
 
-            $table->string('payment_method')->nullable();
+            // $table->string('payment_method')->nullable();
 
             $table->string('payment_provider')->nullable();
-
         });
     }
 
@@ -37,7 +36,6 @@ return new class extends Migration
                 'payment_method',
                 'payment_provider',
             ]);
-
         });
     }
 };

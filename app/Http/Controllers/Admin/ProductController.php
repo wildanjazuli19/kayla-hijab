@@ -36,8 +36,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $product = new Product();
 
-        return view('admin.products.create', compact('categories'));
+        return view('admin.products.form', compact('categories', 'product'));
     }
 
     /*
@@ -79,13 +80,9 @@ class ProductController extends Controller
         */
 
         $product = Product::create([
-
             'name' => $request->name,
-
             'slug' => Str::slug($request->name),
-
             'category_id' => $request->category_id,
-
             'description' => $request->description,
 
             /*
@@ -95,8 +92,7 @@ class ProductController extends Controller
             | ambil dari variant pertama
             */
 
-            'price' => $request->variant_prices[0] ?? 0,
-
+            'price' => (int) $request->variant_prices[0] ?? 0,
             'discount_price' => $request->discount_price ?? null,
 
             /*
@@ -116,10 +112,10 @@ class ProductController extends Controller
             */
 
             'sku' =>
-                'KH-' .
+            'KH-' .
                 strtoupper(substr(Str::slug($request->name), 0, 3))
                 . '-' .
-                rand(1000,9999),
+                rand(1000, 9999),
 
             'thumbnail' => $thumbnail,
 
@@ -154,10 +150,10 @@ class ProductController extends Controller
                         'size' => $size,
 
                         'price' =>
-                            $request->variant_prices[$index],
+                        $request->variant_prices[$index],
 
                         'stock' =>
-                            $request->variant_stocks[$index] ?? 0,
+                        $request->variant_stocks[$index] ?? 0,
 
                     ]);
                 }
@@ -185,7 +181,7 @@ class ProductController extends Controller
         $categories = Category::all();
 
         return view(
-            'admin.products.edit',
+            'admin.products.form',
             compact('product', 'categories')
         );
     }
@@ -201,11 +197,8 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         $request->validate([
-
             'name' => 'required',
-
             'category_id' => 'required',
-
         ]);
 
         /*
@@ -238,7 +231,7 @@ class ProductController extends Controller
 
             'description' => $request->description,
 
-            'price' => $request->variant_prices[0] ?? 0,
+            'price' => (int) $request->variant_prices[0] ?? 0,
 
             'discount_price' => $request->discount_price ?? null,
 
@@ -279,10 +272,10 @@ class ProductController extends Controller
                         'size' => $size,
 
                         'price' =>
-                            $request->variant_prices[$index],
+                        $request->variant_prices[$index],
 
                         'stock' =>
-                            $request->variant_stocks[$index] ?? 0,
+                        $request->variant_stocks[$index] ?? 0,
 
                     ]);
                 }
@@ -331,4 +324,3 @@ class ProductController extends Controller
             );
     }
 }
-
